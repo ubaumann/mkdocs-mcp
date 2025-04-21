@@ -1,0 +1,8 @@
+site_name: My Docs
+site_url: "https://test.demo"
+
+plugins:
+  - mcp:
+      foo: urs
+      # bar: 0
+      # baz: True
