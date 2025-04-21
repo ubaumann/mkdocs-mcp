@@ -1,6 +1,14 @@
 import logging
 
+import click
 from mkdocs.commands import build
+from mkdocs.__main__ import (
+    common_config_options,
+    common_options,
+    cli,
+    clean_help,
+    site_dir_help,
+)
 from mkdocs import config
 
 from mcp.server.fastmcp import FastMCP
@@ -26,11 +34,16 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
     mcp.add_resource(resource=resource)
 
 
-def main(**kwargs):
+@cli.command(name="build")
+@click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
+@common_config_options
+@click.option("-d", "--site-dir", type=click.Path(), help=site_dir_help)
+@common_options
+def build_and_mcp(clean, **kwargs):
     """Build the MkDocs documentation and start MCP Server."""
 
     cfg = config.load_config(**kwargs)
-    cfg.plugins.on_startup(command="build", dirty=False)
+    cfg.plugins.on_startup(command="build", dirty=not clean)
     try:
         build.build(cfg)
     finally:
@@ -46,4 +59,4 @@ def main(**kwargs):
 
 
 if __name__ == "__main__":
-    main()
+    build_and_mcp()
