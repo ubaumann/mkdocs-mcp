@@ -38,7 +38,7 @@ def main(**kwargs):
 
     mcp_plugin = cfg.plugins.get("mcp")
 
-    mcp.name = cfg.site_name
+    # mcp.name = cfg.site_name
     for _, page in mcp_plugin.md_pages.items():
         add_resource(mcp, page)
 
