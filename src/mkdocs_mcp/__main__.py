@@ -35,7 +35,13 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
 
 
 @cli.command(name="build")
-@click.option("-mt", "--mcp-transport", type=click.Choice(["stdio", "sse"]), help="MCP mode", default="sse")
+@click.option(
+    "-mt",
+    "--mcp-transport",
+    type=click.Choice(["stdio", "sse"]),
+    help="MCP mode",
+    default="sse",
+)
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
 @common_config_options
 @click.option("-d", "--site-dir", type=click.Path(), help=site_dir_help)

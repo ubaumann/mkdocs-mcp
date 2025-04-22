@@ -56,7 +56,7 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
             # Only use "included" files to ignore generated files like .css, .js, .woff2, ...
             if f.inclusion.value == InclusionLevel.INCLUDED.value:
                 self.md_pages[name] = PageInfo(
-                    title="ToDO",
+                    title=name,  # ToDo
                     path_md=Path(f.abs_src_path if f.abs_src_path else "not found"),
                     content=f.content_string,
                 )
