@@ -27,3 +27,6 @@ dev = [
 
 [project.entry-points.'mkdocs.plugins']
 mcp = "mkdocs_mcp.plugin:MkDocsMCP"
+
+[project.scripts]
+mkdocs-mcp = "mkdocs_mcp.__main__:build_and_mcp"
