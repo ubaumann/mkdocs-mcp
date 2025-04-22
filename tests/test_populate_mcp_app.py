@@ -1,11 +1,11 @@
 import pytest
 from pathlib import Path
 from mcp.server.fastmcp import FastMCP
-
-
-from mkdocs_mcp.plugin import PageInfo
 from mcp.server.fastmcp.resources import Resource
+
+
 from mkdocs_mcp.__main__ import add_resource
+from mkdocs_mcp.plugin import PageInfo
 
 
 @pytest.fixture
