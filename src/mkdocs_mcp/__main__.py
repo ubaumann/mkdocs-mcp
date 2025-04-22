@@ -35,11 +35,12 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
 
 
 @cli.command(name="build")
+@click.option("-mt", "--mcp-transport", type=click.Choice(["stdio", "sse"]), help="MCP mode", default="sse")
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
 @common_config_options
 @click.option("-d", "--site-dir", type=click.Path(), help=site_dir_help)
 @common_options
-def build_and_mcp(clean, **kwargs):
+def build_and_mcp(mcp_transport, clean, **kwargs):
     """Build the MkDocs documentation and start MCP Server."""
 
     cfg = config.load_config(**kwargs)
@@ -51,11 +52,14 @@ def build_and_mcp(clean, **kwargs):
 
     mcp_plugin = cfg.plugins.get("mcp")
 
-    # mcp.name = cfg.site_name
-    for _, page in mcp_plugin.md_pages.items():
+    mcp._mcp_server.name = cfg.site_name
+    log.info("Starting adding resources to MCP")
+    for name, page in mcp_plugin.md_pages.items():
         add_resource(mcp, page)
+        log.debug(f"Adding resource {name} to MCP")
 
-    mcp.run()
+    log.info("Starting MCP server")
+    mcp.run(mcp_transport)
 
 
 if __name__ == "__main__":
