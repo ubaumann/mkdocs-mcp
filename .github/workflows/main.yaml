@@ -76,6 +76,10 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
     needs: [linters, pytest]
     runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+
     steps:
       - uses: actions/checkout@v4
 
