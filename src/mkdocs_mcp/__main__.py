@@ -40,7 +40,7 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
     "--mcp-transport",
     type=click.Choice(["stdio", "sse"]),
     help="MCP mode",
-    default="sse",
+    default="stdio",
 )
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
 @common_config_options
