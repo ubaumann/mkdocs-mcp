@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 import logging
 from dataclasses import dataclass
 from pathlib import Path
@@ -6,11 +6,10 @@ from pathlib import Path
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from mkdocs.config.base import Config
-from mkdocs.structure.files import InclusionLevel
 
 if TYPE_CHECKING:
     from mkdocs.config.defaults import MkDocsConfig
-    from mkdocs.structure.files import Files
+    from mkdocs.structure.pages import Page
 
 
 log = logging.getLogger(__name__)
@@ -46,19 +45,30 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
     md_pages: dict[str, PageInfo] = {}
     """Dictionary mapping section names to a list of page infos."""
 
-    def on_post_build(self, config: "MkDocsConfig") -> None:
-        # ToDo: Should we convert the html to markdown using BeautifulSoup?
-        ...
+    def on_post_page(
+        self, output: str, /, *, page: "Page", config: "MkDocsConfig"
+    ) -> str | None:
+        """
+        The `post_page` event is called after the template is rendered, but
+        before it is written to disc and can be used to alter the output of the
+        page. If an empty string is returned, the page is skipped and nothing is
+        written to disc.
 
-    def on_files(self, files: "Files", *, config: "MkDocsConfig") -> Optional["Files"]:
-        """Populate md_pages"""
-        for name, f in files.src_paths.items():
-            # Only use "included" files to ignore generated files like .css, .js, .woff2, ...
-            if f.inclusion.value == InclusionLevel.INCLUDED.value:
-                self.md_pages[name] = PageInfo(
-                    title=name,  # ToDo
-                    path_md=Path(f.abs_src_path if f.abs_src_path else "not found"),
-                    content=f.content_string,
-                )
+        Args:
+            output: output of rendered template as string
+            page: `mkdocs.structure.pages.Page` instance
+            config: global configuration object
 
-        return files
+        Returns:
+            output of rendered template as string
+        """
+        title = page.title
+        markdown = page.markdown
+        file_path = page.file.src_uri
+
+        self.md_pages[file_path] = PageInfo(
+            title=title,
+            path_md=Path(file_path),
+            content=str(markdown),
+        )
+        return output
