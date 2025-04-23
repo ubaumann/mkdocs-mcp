@@ -25,7 +25,7 @@ mcp = FastMCP()
 def add_resource(mcp: FastMCP, page: PageInfo) -> None:
     # Register as regular resource
     resource = FunctionResource(
-        uri=AnyUrl(f"docs://{page.title}"),
+        uri=AnyUrl(f"docs://{page.path_md}"),
         name=page.title,
         description=f"The {page.title} documentation",
         mime_type="text/markdown",

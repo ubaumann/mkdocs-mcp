@@ -8,6 +8,7 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "html2text>=2025.4.15",
     "mcp[cli]>=1.6.0",
     "mkdocs>=1.6.1",
     "rich>=14.0.0",

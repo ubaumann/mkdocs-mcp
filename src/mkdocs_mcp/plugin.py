@@ -3,6 +3,8 @@ import logging
 from dataclasses import dataclass
 from pathlib import Path
 
+from html2text import html2text
+
 from mkdocs.plugins import BasePlugin
 from mkdocs.config import config_options
 from mkdocs.config.base import Config
@@ -25,9 +27,15 @@ class PageInfo:
 
 
 class MkDocsMCPConfig(Config):
-    foo = config_options.Type(str, default="a default value")
-    bar = config_options.Type(int, default=0)
-    baz = config_options.Type(bool, default=True)
+    naming_style = config_options.Choice(
+        (
+            "src_file",
+            "dst_url",
+            "title",
+        ),
+        default="src_file",
+    )
+    prefer_markdown = config_options.Type(bool, default=True)
 
 
 class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
@@ -36,8 +44,7 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
 
     This plugin defines the following event hooks:
 
-    - `on_page_content`
-    - `on_post_build`
+    - `on_post_page`
 
 
     """
@@ -62,13 +69,25 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
         Returns:
             output of rendered template as string
         """
-        title = page.title
+        match self.config.get("naming_style"):
+            case "src_file":
+                title = page.file.src_dir or ""
+            case "dst_url":
+                title = page.abs_url or ""
+            case "title":
+                title = page.title
+
         markdown = page.markdown
         file_path = page.file.src_uri
+
+        if self.config.get("prefer_markdown") and markdown:
+            content = markdown
+        else:
+            content = html2text(output)
 
         self.md_pages[file_path] = PageInfo(
             title=title,
             path_md=Path(file_path),
-            content=str(markdown),
+            content=content,
         )
         return output

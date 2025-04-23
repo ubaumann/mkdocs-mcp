@@ -30,7 +30,9 @@ Make sure to include `mcp` in your `mkdocs.yml` plugin list:
 
 ```yaml
 plugins:
-  - mcp
+  - mcp:
+      naming_style: src_file  # "src_file"(default), "dst_url" or "title"
+      prefer_markdown: True  # By default the source markdown is used, set to False to convert the output HTML to markdown
 ```
 
 ## Using Claude Desktop with WSL

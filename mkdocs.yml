@@ -3,6 +3,5 @@ site_url: "https://test.demo"
 
 plugins:
   - mcp:
-      foo: urs
-      # bar: 0
-      # baz: True
+      naming_style: src_file  # "src_file"(default), "dst_url" or "title"
+      prefer_markdown: True  # By default the source markdown is used, set to False to convert the output HTML to markdown
