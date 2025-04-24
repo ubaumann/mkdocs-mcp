@@ -69,16 +69,16 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
         Returns:
             output of rendered template as string
         """
+        markdown = page.markdown
+        file_path = page.file.src_uri
+
         match self.config.get("naming_style"):
             case "src_file":
-                title = page.file.src_dir or ""
+                title = file_path
             case "dst_url":
                 title = page.abs_url or ""
             case "title":
                 title = page.title
-
-        markdown = page.markdown
-        file_path = page.file.src_uri
 
         if self.config.get("prefer_markdown") and markdown:
             content = markdown
