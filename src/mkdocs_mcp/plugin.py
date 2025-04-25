@@ -36,6 +36,7 @@ class MkDocsMCPConfig(Config):
         default="src_file",
     )
     prefer_markdown = config_options.Type(bool, default=True)
+    combine_all_pages = config_options.Type(bool, default=False)
 
 
 class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
@@ -84,6 +85,13 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
             content = markdown
         else:
             content = html2text(output)
+
+        if self.config.get("combine_all_pages"):
+            aggregated_page = self.md_pages.get(
+                "all", PageInfo(title="", path_md=Path("."), content="")
+            )
+            aggregated_page.content = aggregated_page.content + content + "\n"
+            self.md_pages["all"] = aggregated_page
 
         self.md_pages[file_path] = PageInfo(
             title=title,
