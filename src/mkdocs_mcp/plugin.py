@@ -37,6 +37,7 @@ class MkDocsMCPConfig(Config):
     )
     prefer_markdown = config_options.Type(bool, default=True)
     combine_all_pages = config_options.Type(bool, default=False)
+    combine_by_folder = config_options.Type(bool, default=False)
 
 
 class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
@@ -88,10 +89,24 @@ class MkDocsMCP(BasePlugin[MkDocsMCPConfig]):
 
         if self.config.get("combine_all_pages"):
             aggregated_page = self.md_pages.get(
-                "all", PageInfo(title="", path_md=Path("."), content="")
+                "all",
+                PageInfo(title="all (aggregated)", path_md=Path("."), content=""),
             )
             aggregated_page.content = aggregated_page.content + content + "\n"
             self.md_pages["all"] = aggregated_page
+
+        if self.config.get("combine_by_folder"):
+            parent = Path(file_path).parent
+            while len(parent.parts):
+                aggregated_page = self.md_pages.get(
+                    str(parent),
+                    PageInfo(
+                        title=f"{parent} (aggregated)", path_md=parent, content=""
+                    ),
+                )
+                aggregated_page.content = aggregated_page.content + content + "\n"
+                self.md_pages[str(parent)] = aggregated_page
+                parent = parent.parent
 
         self.md_pages[file_path] = PageInfo(
             title=title,

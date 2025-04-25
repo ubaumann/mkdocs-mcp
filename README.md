@@ -33,6 +33,8 @@ plugins:
   - mcp:
       naming_style: src_file  # "src_file"(default), "dst_url" or "title"
       prefer_markdown: True  # By default the source markdown is used, set to False to convert the output HTML to markdown
+      combine_all_pages: False  # Aggregate all pages into one file
+      combine_by_folder: False  # Aggregate each folder
 ```
 
 ## Using Claude Desktop with WSL
