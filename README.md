@@ -20,7 +20,7 @@ This project uses [`uv`](https://github.com/astral-sh/uv) for dependency managem
 To start the MCP server:
 
 ```bash
-uv run python src/mkdocs_mcp/ -mt stdio
+uv run mkdocs-mcp -mt stdio
 ```
 
 
@@ -47,7 +47,7 @@ If you're working with Claude Desktop and WSL, configure your `claude_desktop_co
       "args": [
         "bash",
         "-c",
-        "/home/urs/.cargo/bin/uv run --directory /home/urs/projects/mkdocs-mcp python src/mkdocs_mcp/ -mt stdio"
+        "/home/urs/.cargo/bin/uv run --directory /home/urs/projects/mkdocs-mcp mkdocs-mcp -mt stdio"
       ]
     }
   }
