@@ -23,6 +23,8 @@ To start the MCP server:
 uv run mkdocs-mcp -mt stdio
 ```
 
+Use the `--mkdocs-project-path` option to specify the path to your MkDocs project if it's not in the current directory. The environment variable `MKDOCS_PROJECT_PATH` can also be set for this purpose.
+
 
 ### MkDocs Configuration
 
@@ -74,3 +76,7 @@ uv run mcp dev src/mkdocs_mcp/__main__.py
 ---
 
 Thanks for checking out `mkdocs-mcp`!
+
+---
+
+GitHub [MCP Registry](https://github.com/mcp) mcp-name: io.github.ubaumann/mkdocs-mcp

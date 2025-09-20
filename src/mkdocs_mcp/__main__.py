@@ -1,3 +1,4 @@
+import os
 import logging
 
 import click
@@ -42,12 +43,22 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
     help="MCP mode",
     default="stdio",
 )
+@click.option(
+    "--mkdocs-project-path",
+    type=click.Path(exists=True),
+    help="Path to the MkDocs project",
+    envvar='MKDOCS_PROJECT_PATH',
+    default=None,
+)
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
 @common_config_options
 @click.option("-d", "--site-dir", type=click.Path(), help=site_dir_help)
 @common_options
-def build_and_mcp(mcp_transport, clean, **kwargs):
+def build_and_mcp(mcp_transport, mkdocs_project_path, clean, **kwargs):
     """Build the MkDocs documentation and start MCP Server."""
+
+    if mkdocs_project_path:
+        os.chdir(mkdocs_project_path)
 
     cfg = config.load_config(**kwargs)
     cfg.plugins.on_startup(command="build", dirty=not clean)

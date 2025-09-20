@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.ubaumann/mkdocs-mcp",
+  "description": "An MCP server that provides serves MkDocs as resources.",
+  "status": "active",
+  "repository": {
+    "url": "https://github.com/ubaumann/mkdocs-mcp",
+    "source": "github"
+  },
+  "version": "0.1.2",
+  "packages": [
+    {
+      "registry_type": "pypi",
+      "registry_base_url": "https://pypi.org",
+      "identifier": "mkdocs-mcp",
+      "version": "0.1.2",
+      "transport": {
+        "type": "stdio"
+      },
+      "environment_variables": [
+        {
+          "description": "Path to the MkDocs project",
+          "is_required": true,
+          "format": "string",
+          "is_secret": false,
+          "name": "MKDOCS_PROJECT_PATH"
+        }
+      ]
+    }
+  ]
+}
