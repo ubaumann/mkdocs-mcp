@@ -47,7 +47,7 @@ def add_resource(mcp: FastMCP, page: PageInfo) -> None:
     "--mkdocs-project-path",
     type=click.Path(exists=True),
     help="Path to the MkDocs project",
-    envvar='MKDOCS_PROJECT_PATH',
+    envvar="MKDOCS_PROJECT_PATH",
     default=None,
 )
 @click.option("-c", "--clean/--dirty", is_flag=True, default=True, help=clean_help)
